@@ -11,11 +11,6 @@
     <form action="{{ route('admin.user.store') }}" method="post" class="w-150 p-5 bg-white rounded shadow">
         @csrf
 
-        <div class="mb-4">
-            
-            <input type="text" name="username" id="username" class="p-3 w-full border rounded"
-                value="{{ old('username') }}" required>
-        </div>
         {{-- Username --}}
         <div class="mb-4">
             <label for="username" class="block mb-2">Username</label>
