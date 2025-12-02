@@ -13,12 +13,21 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+
+            // Relasi ke user (kasir)
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Relasi ke member (pelanggan)
+            $table->unsignedBigInteger('member_id');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
+
+            // Nominal
             $table->integer('total')->default(0);
             $table->integer('discount')->default(0);
             $table->integer('grand_total')->default(0);
+
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

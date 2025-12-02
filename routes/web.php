@@ -34,64 +34,75 @@ Route::get('/admin/logout', [AdminController::class, 'logout'])->name('logout');
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 // USER MANAGE -----------------------------------------------------------------------------------------------------
 Route::get('/admin/user_manage', [UserController::class, 'ShowUserManage'])
-->name('admin.user');
+    ->name('admin.user');
 
 Route::get('/admin/user_manage/add', [UserController::class, 'adduser'])
-->name('admin.user.add');
+    ->name('admin.user.add');
 
 Route::post('/admin/user_manage/store', [UserController::class, 'saveuser'])
-->name('admin.user.store');
+    ->name('admin.user.store');
 
 Route::get('/admin/user_manage/edit/{id}', [UserController::class, 'edituser'])
-->name('admin.user.edit');
+    ->name('admin.user.edit');
 
 Route::post('/admin/user_manage/update/{id}', [UserController::class, 'updateuser'])
-->name('admin.user.update');
+    ->name('admin.user.update');
 
 Route::delete('/admin/user_manage/delete/{id}', [UserController::class, 'deleteuser'])
-->name('admin.user.delete');
+    ->name('admin.user.delete');
 
 // MEMBER MANAGE ---------------------------------------------------------------------------------------------------
 Route::get('/admin/member_manage', [MemberController::class, 'ShowMemberManage'])
-->name('admin.member');
+    ->name('admin.member');
 
 Route::get('/admin/member_manage/add', [MemberController::class, 'add'])
-->name('admin.member.add');
+    ->name('admin.member.add');
 
 Route::post('/admin/member_manage/store', [MemberController::class, 'store'])
-->name('admin.member.store');
+    ->name('admin.member.store');
 
 Route::get('/admin/member_manage/edit/{id}', [MemberController::class, 'edit'])
-->name('admin.member.edit');
+    ->name('admin.member.edit');
 
 Route::post('/admin/member_manage/update/{id}', [MemberController::class, 'update'])
-->name('admin.member.update');
+    ->name('admin.member.update');
 
 Route::delete('/admin/member_manage/delete/{id}', [MemberController::class, 'delete'])
-->name('admin.member.delete');
+    ->name('admin.member.delete');
 
 // Barang Management -----------------------------------------------------------------------------------------------
 Route::get('/admin/barang_manage', [BarangController::class, 'ShowBarangManage'])
-->name('admin.barang');
+    ->name('admin.barang');
 
 Route::get('/admin/barang_manage/add', [BarangController::class, 'create'])
-->name('admin.barang.add');
+    ->name('admin.barang.add');
 
 Route::post('/admin/barang_manage/store', [BarangController::class, 'store'])
-->name('admin.barang.store');
+    ->name('admin.barang.store');
 
 Route::get('/admin/barang_manage/edit/{id}', [BarangController::class, 'edit'])
-->name('admin.barang.edit');
+    ->name('admin.barang.edit');
 
 Route::post('/admin/barang_manage/update/{id}', [BarangController::class, 'update'])
-->name('admin.barang.update');
+    ->name('admin.barang.update');
 
 Route::delete('/admin/barang_manage/delete/{id}', [BarangController::class, 'destroy'])
-->name('admin.barang.delete');
+    ->name('admin.barang.delete');
 
 
 // TRANSAKSI kasir -----------------------------------------------------------------------------------------------
-Route::get('/kasir/transaksi', [TransaksiController::class, 'index'])->name('kasir.transaksi');
-Route::get('/kasir/add-cart/{id}', [TransaksiController::class, 'addCart'])->name('kasir.transaksi.addcart');
-Route::get('/kasir/remove-cart/{id}', [TransaksiController::class, 'removeCart'])->name('kasir.transaksi.rmcart');
-Route::post('/kasir/checkout/', [TransaksiController::class, 'checkout'])->name('kasir.transaksi.checkout');
+Route::get('/kasir/transaksi', [TransaksiController::class, 'index'])
+    ->name('kasir.transaksi');
+
+Route::get('/kasir/add-cart/{id}', [TransaksiController::class, 'addCart'])
+    ->name('kasir.transaksi.addcart');
+
+Route::get('/kasir/remove-cart/{id}', [TransaksiController::class, 'removeCart'])
+    ->name('kasir.transaksi.rmcart');
+
+Route::post('/kasir/checkout', [TransaksiController::class, 'checkout'])
+    ->name('kasir.transaksi.checkout');
+
+
+Route::get('/kasir/struk/{id}', [TransaksiController::class, 'struk'])
+    ->name('kasir.transaksi.struk');

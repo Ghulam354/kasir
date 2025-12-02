@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class transaksiModel extends Model
+class TransaksiModel extends Model
 {
     use HasFactory;
 
@@ -13,18 +13,27 @@ class transaksiModel extends Model
 
     protected $fillable = [
         'user_id',
+        'member_id',
         'total',
         'discount',
         'grand_total'
     ];
 
-    public function kasir()
+    // Relasi ke User (kasir)
+    public function user()
     {
-        return $this->belongsTo(usersModel::class, 'id');
+        return $this->belongsTo(usersModel::class);
     }
 
-    public function details()
+    // Relasi ke Member (pelanggan)
+    public function member()
     {
-        return $this->hasMany(detailtransaksiModel::class, 'transaksi_id');
+        return $this->belongsTo(MemberModel::class, 'member_id');
+    }
+
+    // Relasi ke DetailTransaksi
+    public function detail()
+    {
+        return $this->hasMany(DetailTransaksiModel::class, 'transaksi_id');
     }
 }

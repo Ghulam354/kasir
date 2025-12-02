@@ -6,9 +6,9 @@
 @section('content')
     <div class="">
         {{-- filter --}}
-        <div class="p-3 flex items-center my-3">
+        <div class="my-3 flex items-center">
             {{-- input filter tanggal --}}
-            <div class="mx-1 p-2 flex items-center">
+            <div class="my-1 flex items-center">
                 <input type="date" name="filterTanggal" id=""
                     class="border rounded-2xl p-3 bg-blue-500 text-white font-bold mx-1">
                 <input type="submit" value="Filter" class="border rounded-2xl p-3 bg-green-700 text-white font-bold mx-1">
@@ -41,7 +41,7 @@
                     <h1 class="text-xl font-bold text-center">Total User</h1>
                 </div>
             </div>
-            <div class="bg-blue-500 shadow-2xl mx-2 w-100 h-30 rounded-2xl ">
+            <div class="bg-blue-500 shadow-2xl mx-2 w-72 h-30 rounded-2xl ">
                 <h1 class="text-sm font-bold p-3 text-white ">Total Pendapatan</h1>
                 <div class="flex justify-center items-center p-3">
                     <h1 class="text-xl font-bold text-center">Total User</h1>

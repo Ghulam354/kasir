@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Kasir - {{ session('username') }}</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     @vite('resources/css/app.css')
 </head>
 
@@ -27,6 +30,42 @@
     <main>
         @yield('content')
     </main>
+    <script>
+        // Jika Laravel memberi session flash success
+        @if (session('success'))
+            Toastify({
+                text: "{{ session('success') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            }).showToast();
+        @endif
+
+        // Jika Laravel memberi session flash error
+        @if (session('error'))
+            Toastify({
+                text: "{{ session('error') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            }).showToast();
+        @endif
+
+        document.getElementById("btnCheckout").addEventListener("click", function() {
+            Toastify({
+                text: "Memproses checkout...",
+                duration: 1500,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #2193b0, #6dd5ed)",
+            }).showToast();
+        });
+    </script>
+
 </body>
 
 </html>
