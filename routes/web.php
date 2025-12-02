@@ -13,8 +13,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\TransaksiController;
 
 
-
 /*
+
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------

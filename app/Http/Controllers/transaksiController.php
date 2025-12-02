@@ -108,7 +108,6 @@ class TransaksiController extends Controller
 
         // CLEAR CART
         session()->forget('cart');
-
-        return back()->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->route('kasir.transaksi')->with('success', 'Barang berhasil ditambahkan!');
     }
 }

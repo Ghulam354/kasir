@@ -27,7 +27,8 @@
                 </div>
             </div>
 
-            <div class="p-1 my-2 mx-1 rounded-2xl bg-red-600 {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }}">
+            <div
+                class="p-1 my-2 mx-1 rounded-2xl bg-red-600 {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }}">
                 <a href="{{ route('logout') }}" class="  text-lg font-bold text-white transition-all duration-200 
                 {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }}">
                     Logout
