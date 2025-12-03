@@ -7,33 +7,52 @@ use App\Models\BarangModel;
 use App\Models\MemberModel;
 use App\Models\TransaksiModel;
 use App\Models\DetailTransaksiModel;
-use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
     public function index(Request $request)
-    {
-        // CEK MEMBER
-        $member = null;
-        if ($request->phone) {
-            $member = MemberModel::where('phone_number', $request->phone)->first();
-            session(['member_id' => $member->id ?? null]);
+{
+    // Cek Member
+    $member = null;
+    if ($request->phone) {
+        $member = MemberModel::where('phone_number', $request->phone)->first();
+        if ($member) {
+            session(['member_id' => $member->id]);
+        } else {
+            session()->forget('member_id');
         }
-
-        // CARI BARANG
-        $search = $request->q;
-        $barangs = BarangModel::when($search, function ($q) use ($search) {
-            $q->where(function ($r) use ($search) {
-                $r->where('nama', 'like', "%$search%")
-                    ->orWhere('kode_barang', 'like', "%$search%");
-            });
-        })->get();
-
-        // CART
-        $cart = session()->get('cart', []);
-
-        return view('kasir.transaksi.index', compact('member', 'barangs', 'cart'));
     }
+
+    // Cari Barang
+    $search = $request->q;
+    $barangs = BarangModel::when($search, function ($q) use ($search) {
+        $q->where(function ($r) use ($search) {
+            $r->where('nama', 'like', "%$search%")
+                ->orWhere('kode_barang', 'like', "%$search%");
+        });
+    })->get();
+
+    // Cart
+    $cart = session()->get('cart', []);
+
+    // Hitung Total dan Diskon
+    $total = 0;
+    foreach ($cart as $c) {
+        $total += $c['harga_satuan'] * $c['qty'];
+    }
+
+    $memberID = session('member_id');
+    $discount = 0;
+
+    if ($memberID && $total > 50000) {
+        $discount = $total * 0.05;  // Diskon 5%
+    }
+
+    $grandTotal = $total - $discount;
+
+    return view('kasir.transaksi.index', compact('member', 'barangs', 'cart', 'total', 'discount', 'grandTotal'));
+}
+
 
 
     public function addCart($id)
@@ -67,6 +86,12 @@ class TransaksiController extends Controller
         return back()->with('success', 'Barang dihapus dari keranjang');
     }
 
+    public function resetMember()
+    {
+        session()->forget('member_id');
+        return redirect()->route('kasir.transaksi')->with('success', 'Member Dihapus');
+    }
+
 
     public function checkout(Request $request)
     {
@@ -93,7 +118,7 @@ class TransaksiController extends Controller
 
         // SIMPAN TRANSAKSI
         $transaksi = TransaksiModel::create([
-            'user_id' => session('id'), 
+            'user_id' => session('id'),
             'member_id' => $memberID,
             'total' => $total,
             'discount' => $discount,

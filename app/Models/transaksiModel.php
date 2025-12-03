@@ -19,6 +19,10 @@ class TransaksiModel extends Model
         'grand_total'
     ];
 
+
+
+
+    
     // Relasi ke User (kasir)
     public function user()
     {

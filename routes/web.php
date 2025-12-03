@@ -100,9 +100,8 @@ Route::get('/kasir/add-cart/{id}', [TransaksiController::class, 'addCart'])
 Route::get('/kasir/remove-cart/{id}', [TransaksiController::class, 'removeCart'])
     ->name('kasir.transaksi.rmcart');
 
+Route::get('/kasir/reset-member', [TransaksiController::class, 'resetMember'])
+    ->name('kasir.transaksi.resetMember');
+
 Route::post('/kasir/checkout', [TransaksiController::class, 'checkout'])
     ->name('kasir.transaksi.checkout');
-
-
-Route::get('/kasir/struk/{id}', [TransaksiController::class, 'struk'])
-    ->name('kasir.transaksi.struk');
