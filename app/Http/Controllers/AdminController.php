@@ -4,81 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\usersModel;
+use App\Models\TransaksiModel;
+use App\Models\barangModel;
+use App\Models\memberModel;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-
         if (!session('login') || session('role') !== 'ADMIN') {
             return redirect()->route('login')->with('error', 'Silahkan Login Terlebih Dahulu');
         }
 
-        return view('admin.dashboard.index');
-    }
+        $filterTanggal = $request->input('filterTanggal'); // Ambil tanggal dari parameter URL
+        $startDate = null;
+        $endDate = null;
 
-    // User Management Page ============================================================================
-    public function ShowUserManage(Request $request)
-    {
+        // Jika ada filter tanggal
+        if ($filterTanggal) {
+            // Mengonversi tanggal menjadi Carbon dan menentukan waktu mulai dan akhir hari
+            $startDate = Carbon::parse($filterTanggal)->startOfDay();
+            $endDate = Carbon::parse($filterTanggal)->endOfDay();
+        }
 
-        // search 
-        $search = $request->search;
+        // Mengambil total data berdasarkan filter tanggal jika ada
+        $totalUsers = usersModel::count();
+        $totalMembers = memberModel::count();
+        $totalBarang = barangModel::count();
 
-        $users = usersModel::when($search, function ($query) use ($search) {
-            $query->where('username', 'like', "%{$search}%")
-                ->orWhere('fullname', 'like', "%{$search}%")
-                ->orWhere('phone_number', 'like', "%{$search}%");
-        })->get();
+        $totalTransaksi = TransaksiModel::when($startDate, function ($query) use ($startDate, $endDate) {
+            return $query->whereBetween('created_at', [$startDate, $endDate]);
+        })->count();
 
+        // Menghitung total pendapatan (grand_total)
+        $totalPendapatan = TransaksiModel::when($startDate, function ($query) use ($startDate, $endDate) {
+            return $query->whereBetween('created_at', [$startDate, $endDate]);
+        })->sum('grand_total');
 
-        return view('admin.user_manage.index', compact('users'));
-    }
-    // add user
-    public function adduser()
-    {
-        return view('admin.user_manage.add');
-    }
-    // save user
-    public function saveuser(Request $request)
-    {
-        // Validasi tambah user
-        $request->validate([
-            'username' => 'required|unique:users,username',
-            'password' => 'required|min:8',
-            'fullname' => 'required',
-            'phone_number' => 'required',
-            'role' => 'required'
-        ], [
-            'password.min' => 'Password minimal 8 karakter.'
-        ]);
-
-        // Buat user (password otomatis ter-hash lewat mutator)
-        usersModel::create([
-            'username' => $request->username,
-            'password' => $request->password,
-            'fullname' => $request->fullname,
-            'phone_number' => $request->phone_number,
-            'role' => $request->role,
-        ]);
-
-        return redirect()->route('admin.user')
-            ->with('success', 'User Berhasil Ditambahkan');
-    }
-    public function edituser(){
-        
-    }
-    
-    
-    
-    // Member Management Page ============================================================================
-    public function ShowMemberManage()
-    {
-        return view('admin.member_manage.index');
-    }
-
-    public function ShowTransaksiManage()
-    {
-        return view('admin.transaksi_manage.index');
+        // Kembalikan data ke view
+        return view('admin.dashboard.index', compact('totalUsers', 'totalMembers', 'totalBarang', 'totalTransaksi', 'totalPendapatan', 'filterTanggal'));
     }
 
     public function logout()

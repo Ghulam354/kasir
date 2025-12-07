@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // controller
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\KasirController;
 
 use App\Http\Controllers\UserController;
@@ -89,6 +90,27 @@ Route::post('/admin/barang_manage/update/{id}', [BarangController::class, 'updat
 Route::delete('/admin/barang_manage/delete/{id}', [BarangController::class, 'destroy'])
     ->name('admin.barang.delete');
 
+// TRANSAKSI admin -----------------------------------------------------------------------------------------------
+Route::get('/admin/transaksi_manage', [AdminTransaksiController::class, 'showTransaksi'])
+    ->name('admin.transaksi');
+
+Route::get('/admin/transaksi_manage/add', [AdminTransaksiController::class, 'create'])
+    ->name('admin.transaksi.add');
+
+Route::post('/admin/transaksi_manage/store', [AdminTransaksiController::class, 'store'])
+    ->name('admin.transaksi.store');
+
+Route::get('/admin/transaksi_manage/edit/{id}', [AdminTransaksiController::class, 'edit'])
+    ->name('admin.transaksi.edit');
+
+Route::post('/admin/transaksi_manage/update/{id}', [AdminTransaksiController::class, 'update'])
+    ->name('admin.transaksi.update');
+
+Route::delete('/admin/transaksi_manage/delete/{id}', [AdminTransaksiController::class, 'destroy'])
+    ->name('admin.transaksi.delete');
+
+Route::get('/admin/transaksi_manage/struk/{id}', [AdminTransaksiController::class, 'struk'])
+    ->name('admin.transaksi.struk');
 
 // TRANSAKSI kasir -----------------------------------------------------------------------------------------------
 Route::get('/kasir/transaksi', [TransaksiController::class, 'index'])

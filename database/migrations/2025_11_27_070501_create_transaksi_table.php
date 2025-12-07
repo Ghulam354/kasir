@@ -16,11 +16,17 @@ return new class extends Migration
 
             // Relasi ke user (kasir)
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
 
-            // Relasi ke member (pelanggan)
-            $table->unsignedBigInteger('member_id');
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
+            // Relasi ke member (pelanggan) - boleh NULL
+            $table->unsignedBigInteger('member_id')->nullable();
+            $table->foreign('member_id')
+                  ->references('id')
+                  ->on('members')
+                  ->onDelete('set null');
 
             // Nominal
             $table->integer('total')->default(0);

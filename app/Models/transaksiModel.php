@@ -22,7 +22,7 @@ class TransaksiModel extends Model
 
 
 
-    
+
     // Relasi ke User (kasir)
     public function user()
     {

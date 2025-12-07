@@ -11,47 +11,56 @@ use App\Models\DetailTransaksiModel;
 class TransaksiController extends Controller
 {
     public function index(Request $request)
-{
-    // Cek Member
-    $member = null;
-    if ($request->phone) {
-        $member = MemberModel::where('phone_number', $request->phone)->first();
-        if ($member) {
-            session(['member_id' => $member->id]);
-        } else {
-            session()->forget('member_id');
+    {
+        // Cek Member
+        $member = null;
+        if ($request->phone) {
+            $member = MemberModel::where('phone_number', $request->phone)->first();
+
+            if ($member) {
+                session(['member_id' => $member->id]);
+            } else {
+                // Tidak ditemukan → tidak pakai member
+                session()->forget('member_id');
+            }
         }
-    }
 
-    // Cari Barang
-    $search = $request->q;
-    $barangs = BarangModel::when($search, function ($q) use ($search) {
-        $q->where(function ($r) use ($search) {
-            $r->where('nama', 'like', "%$search%")
+        // Cari Barang
+        $search = $request->q;
+        $barangs = BarangModel::when($search, function ($q) use ($search) {
+            $q->where('nama', 'like', "%$search%")
                 ->orWhere('kode_barang', 'like', "%$search%");
-        });
-    })->get();
+        })->get();
 
-    // Cart
-    $cart = session()->get('cart', []);
+        // Cart
+        $cart = session()->get('cart', []);
 
-    // Hitung Total dan Diskon
-    $total = 0;
-    foreach ($cart as $c) {
-        $total += $c['harga_satuan'] * $c['qty'];
+        // Total & Diskon
+        $total = 0;
+        foreach ($cart as $c) {
+            $total += $c['harga_satuan'] * $c['qty'];
+        }
+
+        $memberID = session('member_id');
+        $discount = 0;
+
+        // Diskon hanya jika MEMBER ADA
+        if ($memberID && $total > 50000) {
+            $discount = $total * 0.05;
+        }
+
+        $grandTotal = $total - $discount;
+
+        return view('kasir.transaksi.index', compact(
+            'member',
+            'barangs',
+            'cart',
+            'total',
+            'discount',
+            'grandTotal'
+        ));
     }
 
-    $memberID = session('member_id');
-    $discount = 0;
-
-    if ($memberID && $total > 50000) {
-        $discount = $total * 0.05;  // Diskon 5%
-    }
-
-    $grandTotal = $total - $discount;
-
-    return view('kasir.transaksi.index', compact('member', 'barangs', 'cart', 'total', 'discount', 'grandTotal'));
-}
 
 
 
@@ -107,9 +116,10 @@ class TransaksiController extends Controller
             $total += $c['harga_satuan'] * $c['qty'];
         }
 
-        $memberID = session('member_id');
-        $discount = 0;
+        
+        $memberID = session('member_id') ?? null;
 
+        $discount = 0;
         if ($memberID && $total > 50000) {
             $discount = $total * 0.05;
         }
@@ -118,14 +128,14 @@ class TransaksiController extends Controller
 
         // SIMPAN TRANSAKSI
         $transaksi = TransaksiModel::create([
-            'user_id' => session('id'),
-            'member_id' => $memberID,
+            'user_id' => session('id'), 
+            'member_id' => $memberID,   
             'total' => $total,
             'discount' => $discount,
-            'grand_total' => $grandTotal
+            'grand_total' => $grandTotal,
         ]);
 
-        // SIMPAN DETAIL & KURANGI STOK
+        // DETAIL & KURANGI STOK
         foreach ($cart as $c) {
 
             DetailTransaksiModel::create([
@@ -141,18 +151,10 @@ class TransaksiController extends Controller
             $barang->save();
         }
 
-        // CLEAR SESSION CART
+        // CLEAR SESSION
         session()->forget('cart');
         session()->forget('member_id');
 
         return redirect('/kasir/transaksi')->with('success', 'Transaksi berhasil!');
-    }
-
-
-    public function struk($id)
-    {
-        $trx = TransaksiModel::with(['detail.barang', 'member'])->findOrFail($id);
-
-        return view('kasir.transaksi.struk', compact('trx'));
     }
 }

@@ -39,7 +39,10 @@
                 close: true,
                 gravity: "top",
                 position: "right",
-                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                backgroundColor: "#28a745", // hijau solid
+                style: {
+                    borderRadius: "10px",
+                }
             }).showToast();
         @endif
 
@@ -51,20 +54,27 @@
                 close: true,
                 gravity: "top",
                 position: "right",
-                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                backgroundColor: "#dc3545", // merah solid
+                style: {
+                    borderRadius: "10px",
+                }
             }).showToast();
         @endif
 
-        document.getElementById("btnCheckout").addEventListener("click", function() {
+        document.getElementById("btnCheckout").addEventListener("click", function () {
             Toastify({
                 text: "Memproses checkout...",
                 duration: 1500,
                 gravity: "top",
                 position: "right",
-                backgroundColor: "linear-gradient(to right, #2193b0, #6dd5ed)",
+                backgroundColor: "#0d6efd", // biru solid
+                style: {
+                    borderRadius: "10px",
+                }
             }).showToast();
         });
     </script>
+
 
 </body>
 

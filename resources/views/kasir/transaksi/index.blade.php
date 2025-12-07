@@ -161,7 +161,7 @@
                             </tr>
                         </table>
                         {{-- CHECKOUT --}}
-                        <form action="{{ route('kasir.transaksi.checkout') }}" method="post" class="w-auto bg-red-500 p-1">
+                        <form action="{{ route('kasir.transaksi.checkout') }}" method="post" class="w-auto p-1">
                             @csrf
                             <input type="hidden" name="member_id" value="{{ $member->id ?? null }}">
                             <button type="submit" id="btnCheckout"

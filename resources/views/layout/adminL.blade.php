@@ -12,55 +12,53 @@
 <body class="flex bg-gray-100 min-h-screen">
 
     {{-- SIDEBAR --}}
-    <aside class="w-64 bg-gray-400 text-white h-screen sticky top-0 flex flex-col shadow-xl">
-
-        <div class=" m-2 p-1  text-center bg-white text-black rounded-2xl">
-            <div class="m-1 bg-blue-500 rounded-2xl ">
-                <h1 class="text-lg font-bold text-white p-1 tracking-wide ">ADMIN PANEL</h1>
+    <aside class="w-64 bg-gray-400  h-screen sticky top-0 flex flex-col shadow-xl">
+        <div class="flex items-center p-3 bg-white m-2 rounded-2xl">
+            <div class="">
+                <div class="w-15 h-15 bg-blue-600 rounded-full"></div>
             </div>
-            <div class="flex justify-center items-center mx-1 my-2">
-                <div class="bg-yellow-500 p-3 w-35  rounded-2xl text-white font-black">
-                    <h1 class="text-xs font-bold tracking-wide">{{ session('fullname') }}</h1>
+            <div class="mx-2">
+                <div class="grid ">
+                    <div class="bg-blue-500 p-2 w-35 rounded-2xl text-white font-black">
+                        <h1 class="text-xs font-bold text-center">{{ session('role') }}</h1>
+                    </div>
+                    <div class="bg-blue-500 p-2 w-35 my-1  rounded-2xl text-white font-black">
+                        <h1 class="text-xs font-bold text-center">{{ session('fullname') }}</h1>
+                    </div>
+                    <div
+                        class=" transition-all duration-200 p-1 w-35 {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }} bg-red-500 w-20 rounded-2xl text-center font-black">
+                        <a href="{{ route('logout') }}"
+                            class="  text-xs text-center font-bold text-black hover:text-white  ">
+                            Logout
+                        </a>
+                    </div>
                 </div>
-                <div class="bg-yellow-500 p-3 w-20 mx-1 rounded-2xl text-white font-black">
-                    <h1 class="text-xs font-bold tracking-wide">{{ session('role') }}</h1>
-                </div>
             </div>
-
-            <div
-                class="p-1 my-2 mx-1 rounded-2xl bg-red-600 {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }}">
-                <a href="{{ route('logout') }}" class="  text-lg font-bold text-white transition-all duration-200 
-                {{ request()->routeIs('logout') ? 'bg-red-500' : 'hover:bg-red-500'  }}">
-                    Logout
-                </a>
-            </div>
-
-
         </div>
 
-        <nav class="flex flex-col p-4 space-y-2">
+        <nav class="flex flex-col p-4 space-y-2 bg-white m-2 rounded-2xl">
 
             <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg transition-all duration-200 
-                {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 font-semibold' : 'hover:bg-blue-700' }}">
+                {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 font-semibold text-white' : 'hover:bg-blue-700 ' }}">
                 Dashboard
             </a>
 
             <a href="{{ route('admin.user') }}" class="px-3 py-2 rounded-lg transition-all duration-200 
-                {{ request()->routeIs('admin.user') ? 'bg-blue-600 font-semibold' : 'hover:bg-blue-700' }}">
+                {{ request()->routeIs('admin.user') ? 'bg-blue-600 font-semibold text-white' : 'hover:bg-blue-700 ' }}">
                 Manajemen User
             </a>
 
             <a href="{{ route('admin.member') }}" class="px-3 py-2 rounded-lg transition-all duration-200 
-                {{ request()->routeIs('admin.member') ? 'bg-blue-600 font-semibold' : 'hover:bg-blue-700' }}">
+                {{ request()->routeIs('admin.member') ? 'bg-blue-600 font-semibold text-white' : 'hover:bg-blue-700 ' }}">
                 Management Member
             </a>
 
             <a href="{{ route('admin.barang') }}" class="px-3 py-2 rounded-lg transition-all duration-200 
-                {{ request()->routeIs('admin.barang') ? 'bg-blue-600 font-semibold' : 'hover:bg-blue-700' }}">
+                {{ request()->routeIs('admin.barang') ? 'bg-blue-600 font-semibold text-white' : 'hover:bg-blue-700 ' }}">
                 Management Barang
             </a>
 
-            <a href="" class="px-3 py-2 rounded-lg transition-all duration-200 
+            <a href="{{ route('admin.transaksi') }}" class="px-3 py-2 rounded-lg transition-all duration-200 
                 {{ request()->routeIs('admin.transaksi') ? 'bg-blue-600 font-semibold' : 'hover:bg-blue-700' }}">
                 Management Transaksi
             </a>
